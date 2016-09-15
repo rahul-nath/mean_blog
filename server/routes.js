@@ -6,6 +6,8 @@ var express = require('express'),
 
 module.exports = function(app){	
 
+
+
     // angularjs catch all route
     router.get('/*', function(req, res) {
 	res.sendFile(rootPath + 'public/index.html', { user: req.user });
@@ -24,13 +26,15 @@ module.exports = function(app){
 	res.render("admin/register");
     });
 
-    // idk extra shit
+    //******** added here
     router.get('/admin/dashboard', isAdmin, function(req, res){
 	res.render('admin/dashboard', {user: req.user});
     });
 
     router.post('/register', function(req, res){
 
+    	// this shit though?
+	var User = require('./models/user')
 	// passport-local-mongoose: Convenience method to register a new user instance with a given password. Checks if username is unique
 	User.register(new User({
 	    email: req.body.email
@@ -59,3 +63,14 @@ module.exports = function(app){
 	return;
     });
 };
+
+// where the fuck do I put this?
+function isAdmin(req, res, next){
+    if(req.isAuthenticated() && req.user.email === 'connorleech@gmail.com'){
+        console.log('cool you are an admin, carry on your way');
+        next();
+    } else {
+        console.log('You are not an admin');
+        res.redirect('/admin');
+    }
+}

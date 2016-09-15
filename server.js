@@ -30,6 +30,7 @@ app.listen(envConfig.port, function(){
   console.log('Server listening on port ' + envConfig.port)
 });
 
+// new passport session
 var passport = require('passport');
 require('./server/passport')(passport);   // this file is defined below
 app.use(passport.initialize());
